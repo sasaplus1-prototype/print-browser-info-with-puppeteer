@@ -20,7 +20,9 @@ jobs:
           import puppeteer from 'puppeteer-core';
 
           async function main() {
-            const browser = await puppeteer.launch();
+            const browser = await puppeteer.launch({
+              executablePath: '/usr/bin/google-chrome-stable'
+            });
 
             console.log(await browser.version());
             console.log(await browser.userAgent());
