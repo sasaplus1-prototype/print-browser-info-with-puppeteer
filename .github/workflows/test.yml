@@ -1,0 +1,31 @@
+name: test
+
+on:
+  - push
+
+jobs:
+  test:
+    runs-on:
+    timeout-minutes: 30
+    steps:
+      - run: sudo apt-get --yes update
+      - run: sudo apt-get --yes install fonts-noto
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node
+        with:
+          node-version: 18
+          cache: npm
+      - run: npm install -D --no-save storycap@4.2.0
+      - run: |
+          cat <<'EOB' > index.mjs
+          import puppeteer from 'puppeteer-core';
+
+          async function main() {
+            const browser = await puppeteer.launch();
+
+            console.log(await browser.version());
+            console.log(await browser.userAgent());
+          }
+          main();
+          EOB
+      - run: node index.mjs
