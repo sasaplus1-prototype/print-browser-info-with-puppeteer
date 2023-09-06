@@ -14,14 +14,25 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-      - run: npm install -D --no-save storycap@4.2.0 reg-suit
+      - run: npm install -D --no-save storycap@4.2.0
+      - run: |
+          cat <<'EOB' > index.cjs
+          const { findChrome } = require('storycrawler/lib/find-chrome');
+
+          async function main() {
+            console.log(await findChrome({}));
+          }
+          main();
+          EOB
+      - run: node index.cjs | tee chrome.txt
+      - run: echo "chrome=$(cat chrome.txt)" >> "$GITHUB_ENV"
       - run: |
           cat <<'EOB' > index.mjs
           import puppeteer from 'puppeteer-core';
 
           async function main() {
             const browser = await puppeteer.launch({
-              executablePath: '/usr/bin/google-chrome-stable'
+              executablePath: process.env.chrome
             });
 
             console.log(await browser.version());
