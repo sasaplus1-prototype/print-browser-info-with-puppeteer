@@ -37,6 +37,8 @@ jobs:
 
             console.log(await browser.version());
             console.log(await browser.userAgent());
+
+            await browser.close();
           }
           main();
           EOB
