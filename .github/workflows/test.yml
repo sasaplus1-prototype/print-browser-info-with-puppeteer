@@ -24,7 +24,7 @@ jobs:
           }
           main();
           EOB
-      - run: node index.cjs | tee chrome.txt
+      - run: node index.cjs | jq -r .executablePath | tee chrome.txt
       - run: echo "chrome=$(cat chrome.txt)" >> "$GITHUB_ENV"
       - run: |
           cat <<'EOB' > index.mjs
