@@ -20,7 +20,10 @@ jobs:
           const { findChrome } = require('storycrawler/lib/find-chrome');
 
           async function main() {
-            console.log(await findChrome({}));
+            const result = await findChrome({});
+            const json = JSON.stringify(result, null, 2);
+
+            console.log(json);
           }
           main();
           EOB
